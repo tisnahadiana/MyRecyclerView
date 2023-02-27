@@ -10,33 +10,35 @@ import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import id.droomptech.myrecyclerview.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var rvHeroes: RecyclerView
+    private lateinit var binding: ActivityMainBinding
+
     private val list = ArrayList<Hero>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
 
-        rvHeroes = findViewById(R.id.rv_heroes)
-        rvHeroes.setHasFixedSize(true)
+        binding.rvHeroes.setHasFixedSize(true)
 
         list.addAll(getListHeroes())
         showRecyclerList()
 
         if (applicationContext.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            rvHeroes.layoutManager = GridLayoutManager(this, 2)
+            binding.rvHeroes.layoutManager = GridLayoutManager(this, 2)
         } else {
-            rvHeroes.layoutManager = LinearLayoutManager(this)
+            binding.rvHeroes.layoutManager = LinearLayoutManager(this)
         }
     }
 
     private fun showRecyclerList() {
-        rvHeroes.layoutManager = LinearLayoutManager(this)
+        binding.rvHeroes.layoutManager = LinearLayoutManager(this)
         val listHeroAdapter = ListHeroAdapter(list)
-        rvHeroes.adapter = listHeroAdapter
+        binding.rvHeroes.adapter = listHeroAdapter
 
         listHeroAdapter.setOnItemClickCallback(object : ListHeroAdapter.OnItemClickCallback {
             override fun onItemClicked(data: Hero) {
@@ -54,6 +56,7 @@ class MainActivity : AppCompatActivity() {
         val dataDescription = resources.getStringArray(R.array.data_description)
         val dataPhoto = resources.obtainTypedArray(R.array.data_photo)
         val dataPhoto2 = resources.getStringArray(R.array.data_photo)
+
         val listHero = ArrayList<Hero>()
         for (i in dataName.indices) {
 //            val hero = Hero(dataName[i], dataDescription[i], dataPhoto.getResourceId(i, -1))
@@ -75,10 +78,10 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_list -> {
-                rvHeroes.layoutManager = LinearLayoutManager(this)
+                binding.rvHeroes.layoutManager = LinearLayoutManager(this)
             }
             R.id.action_grid -> {
-                rvHeroes.layoutManager = GridLayoutManager(this, 2)
+                binding.rvHeroes.layoutManager = GridLayoutManager(this, 2)
             }
             R.id.action_about -> {
 
